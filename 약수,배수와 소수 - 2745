@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <math.h>
+#include <string.h>
+
+int convertToDecimal(char* number, int base) {
+    int length = strlen(number);
+    int decimal = 0;
+    int power = 0;
+
+    for (int i = length - 1; i >= 0; i--) {
+        int digit;
+        if (number[i] >= 'A' && number[i] <= 'Z')
+            digit = number[i] - 'A' + 10;
+        else
+            digit = number[i] - '0';
+
+        decimal += digit * pow(base, power);
+        power++;
+    }
+
+    return decimal;
+}
+
+int main() {
+    char number[100];
+    int base;
+
+    scanf("%s %d", number, &base);
+
+    int result = convertToDecimal(number, base);
+    printf("%d\n", result);
+
+    return 0;
+}
+
+
+
