@@ -1,0 +1,64 @@
+#include <stdio.h>
+#include <cstring>
+#include <queue>
+
+using namespace std;
+char cmd[10];
+int main()
+{
+	// freopen("input.txt", "r", stdin);
+	int n; scanf("%d", &n);
+	int val;
+	queue<int> que;
+	for (int i = 0; i < n; i++)
+	{
+		scanf("%s", cmd);
+		if (!strcmp(cmd, "push"))
+		{
+			scanf("%d", &val);
+			que.push(val);
+		}
+		else if (!strcmp(cmd, "pop"))
+		{
+			if (que.size() == 0)
+			{
+				printf("-1\n");
+			}
+			else 
+			{
+				printf("%d\n", que.front());
+				que.pop();
+			}
+		}
+		else if (!strcmp(cmd, "front"))
+		{
+			if (que.size() == 0)
+			{
+				printf("-1\n");
+			}
+			else
+			{
+				printf("%d\n", que.front());
+			}
+		}
+		else if (!strcmp(cmd, "back"))
+		{
+			if (que.size() == 0)
+			{
+				printf("-1\n");
+			}
+			else
+			{
+				printf("%d\n", que.back());
+			}
+		}
+		else if (!strcmp(cmd, "size"))
+		{
+			printf("%d\n", que.size());
+		}
+		else if (!strcmp(cmd, "empty"))
+		{
+			printf("%d\n", que.empty());
+		}
+	}
+}
