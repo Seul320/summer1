@@ -1,0 +1,60 @@
+주어진 문제에서는 N에 대해 0과 1이 각각 몇 번 출력되는지를 구해야 한다. 
+피보나치 수열을 구성하는 각 항의 값은 이전 두 항을 더한 값이므로,
+피보나치 함수를 호출하면서 0과 1이 출력되는 횟수를 카운트할 수 있다.
+
+1. 입력 받은 수 T를 저장한다. (테스트 케이스 개수)
+2. T번 반복하면서 다음을 수행한다.
+   2.1. 입력 받은 수 N을 저장한다.
+   2.2. 0과 1의 출력 횟수를 저장하는 변수 zero와 one을 초기화한다.
+   2.3. 만약 N이 0이면, zero를 1 증가시킨다.
+   2.4. 만약 N이 1이면, one을 1 증가시킨다.
+   2.5. 그 외의 경우, 피보나치 함수를 호출하여 N에 대한 0과 1의 출력 횟수를 계산한다.
+        - 피보나치 함수는 이전 두 항의 0과 1의 출력 횟수를 더하여 현재 항의 출력 횟수를 구하는 방식으로 동작한다.
+   2.6. zero와 one을 출력한다.
+
+#include <iostream>
+using namespace std;
+
+void fibonacci(int n, int& zero, int& one) {
+    if (n == 0) {
+        zero = 1;
+        one = 0;
+        return;
+    } else if (n == 1) {
+        zero = 0;
+        one = 1;
+        return;
+    }
+
+    int prev_zero = 1;
+    int prev_one = 0;
+    int curr_zero = 0;
+    int curr_one = 1;
+
+    for (int i = 2; i <= n; i++) {
+        curr_zero = prev_zero + curr_zero;
+        curr_one = prev_one + curr_one;
+
+        prev_zero = curr_zero - prev_zero;
+        prev_one = curr_one - prev_one;
+    }
+
+    zero = curr_zero;
+    one = curr_one;
+}
+
+int main() {
+    int T;
+    cin >> T;
+
+    for (int t = 0; t < T; t++) {
+        int N;
+        cin >> N;
+
+        int zero, one;
+        fibonacci(N, zero, one);
+
+        cout << zero << " " << one << "\n";
+    }
+
+    return 0;
