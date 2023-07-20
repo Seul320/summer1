@@ -1,0 +1,104 @@
+입력으로 배열의 크기 sz와 출력하고자 하는 원소의 순서 ord를 받음
+배열 arr과 변수 cnt, ord, Bool을 초기화함
+병합 정렬 알고리즘을 구현하는 함수 merge_sort와 병합을 수행하는 함수 merge를 정의
+merge_sort 함수는 주어진 배열의 특정 부분을 분할하고 병합 정렬을 수행
+merge 함수는 두 개의 정렬된 부분 배열을 하나로 합치면서 카운트를 수행하고, ord번째로 작은 두 개의 원소를 출력
+Bool 변수를 이용하여 ord번째로 작은 두 개의 원소를 찾았는지 여부를 체크함
+병합 정렬을 수행한 후, Bool 값이 여전히 0인 경우 -1을 출력함
+
+merge 함수: 병합 정렬에서 가장 중요한 부분으로, 두 개의 정렬된 배열을 합치면서 ord번째로 작은 두 개의 원소를 찾고 출력
+병합 정렬 알고리즘: 병합 정렬은 분할 정복 방법을 사용하여 리스트를 정렬하는 알고리즘으로, 시간 복잡도가 O(n log n) 이다
+Bool 변수: Bool 변수는 ord번째로 작은 두 개의 원소를 찾았는지 여부를 확인하기 위한 플래그로 사용됨
+값이 0인 경우에는 ord번째로 작은 두 개의 원소를 찾지 못한 것이므로 -1을 출력함
+
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int* arr;
+int sz, cnt = 0, ord;
+int Bool = 0;
+
+void merge(int start, int mid, int end) {
+	int s = start;
+	int m = mid + 1;
+	int idx = 0;
+	int n = 0;
+	vector<int> temp(end - start + 1);
+
+	while (s <= mid && m <= end) {
+		if (arr[s] < arr[m]) temp[idx++] = arr[s++];
+		else temp[idx++] = arr[m++];
+
+		cnt++;
+		
+		if (cnt == ord) {
+			for (int i = 0; i < sz; i++) {
+				if (start <= i && i <= start + (idx - 1)) cout << temp[n++] << ' ';
+				else cout << arr[i] << ' ';
+			}
+			Bool = 1;
+			return;
+		}
+	}
+
+	while (s <= mid) {
+		temp[idx++] = arr[s++];
+		cnt++;
+
+		if (cnt == ord) {
+			for (int i = 0; i < sz; i++) {
+				if (start <= i && i <= start + (idx - 1)) cout << temp[n++] << ' ';
+				else cout << arr[i] << ' ';
+			}
+			Bool = 1;
+			return;
+		}
+	}
+
+	while (m <= end) {
+		temp[idx++] = arr[m++];
+		cnt++;
+
+		if (cnt == ord) {
+			for (int i = 0; i < sz; i++) {
+				if (start <= i && i <= start + (idx - 1)) cout << temp[n++] << ' ';
+				else cout << arr[i] << ' ';
+			}
+			Bool = 1;
+			return;
+		}
+	}
+
+	int idx2 = 0;
+	int s2 = start;
+
+	while (s2 <= end) arr[s2++] = temp[idx2++];
+	temp.clear();
+}
+
+void merge_sort(int start, int end) {
+	int mid;
+
+	if (start < end) {
+		mid = (start + end) / 2;
+		merge_sort(start, mid);
+		merge_sort(mid + 1, end);
+		merge(start, mid, end);
+	}
+}
+
+int main() {
+	ios_base::sync_with_stdio(false),cin.tie(NULL),cout.tie(NULL);
+
+	cin >> sz >> ord;
+	arr = new int[sz];
+	for (int i = 0; i < sz; i++) cin >> arr[i];
+
+	merge_sort(0, sz - 1);
+
+	if (Bool == 0) cout << -1;
+
+	delete[] arr;
+	return 0;
+}
