@@ -1,0 +1,58 @@
+배열 A 에 서로 다른 수를 Merge Sort 로 정렬
+배열 A 의 K 번째로 저장되는 수를 출력
+- 배열 A 의 크기 N [5 ~ 500,000]
+- 배열 A 의 각 원소 (중복 X) [1 ~ 1,000,000,000]
+- 저장 횟수 K [1 ~ 100,000,000]
+
+문제에 제시된 pseudo code 는 일반적인 형태의 Merge Sort 코드이다
+Merge Sort 학습 후 해당 코드를 작성해보시면 아래와 같음
+여기서 K 번 째 숫자를 확인하기 위해
+추가한 부분은 pseudo code 의 마지막 부분이다.
+cnt 변수를 전역으로 선언해두고, 배열에 값이 저장할 때마다 1씩 증가
+이 값이 K 와 같아지면 해당 값을 저장하여 출력함.
+Merge Sort 시 발생하는 저장 횟수가 K 보다 작으면 -1을 출력해야하기 때문에
+Merge Sort 전에 res 를 -1 로 초기화해두고 Sorting 후에는 그대로 출력함
+
+#ifndef _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+#include <cstdio>
+
+const int LM = 500000;
+int a[LM + 5], t[LM + 5], N, K, cnt, res;
+
+void mSort(int s, int e) {
+	if (s >= e) return;
+
+	int m = (s + e) / 2;
+	mSort(s, m);
+	mSort(m + 1, e);
+
+	int i = s, j = m + 1, k = s;
+	while (i <= m && j <= e) {
+		if (a[i] <= a[j]) t[k++] = a[i++];
+		else t[k++] = a[j++];
+	}
+
+	while (i <= m) t[k++] = a[i++];
+	while (j <= e) t[k++] = a[j++];
+
+	for (i = s; i <= e; ++i) {
+		a[i] = t[i];
+		if (++cnt == K) res = a[i];
+	}
+}
+
+int main(){
+#ifdef _WIN32
+	freopen("24060.txt", "r", stdin);
+#endif // _WIN32
+	scanf("%d %d", &N, &K);
+	for (int i = 0; i < N; ++i) scanf("%d", &a[i]);
+
+	res = -1;
+	mSort(0, N - 1);
+
+	printf("%d\n", res);
+	return 0;
+}
